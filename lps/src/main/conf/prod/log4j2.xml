@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="off">
+    <Properties>
+        <Property name="logdir">${sys:catalina.base}/logs/lps</Property>
+        <!-- 日志切割的最小单位 -->
+        <!-- <property name="EVERY_FILE_SIZE">10M</property> -->
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%file] %n%level : %msg%n" />
+        </Console>
+        <RollingFile name="RollingFileInfo"
+            fileName="${logdir}/lps_info.log"
+            filePattern="${logdir}/lps_info.%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%C{36}.%M] %n%level : %msg%n" />
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <Policies>
+               <TimeBasedTriggeringPolicy modulate="true" interval="1"/>  
+			</Policies>
+            <!-- <SizeBasedTriggeringPolicy size="${EVERY_FILE_SIZE}" /> -->
+        </RollingFile>
+        <!-- 只显示error级别的信息 -->
+        <RollingFile name="RollingFileError"
+            fileName="${logdir}/lps_error.log"
+            filePattern="${logdir}/lps_error-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss.SSS} [%thread] [%C{36}.%M:%L] %n%level : %msg%xEx%n" />
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <Policies>
+               <TimeBasedTriggeringPolicy modulate="true" interval="1"/>  
+			</Policies>
+            <!-- <SizeBasedTriggeringPolicy size="${EVERY_FILE_SIZE}" /> -->
+        </RollingFile>
+        
+        <RollingFile name="RollingFileDebug"
+            fileName="${logdir}/lps_debug.log"
+            filePattern="${logdir}/lps_debug.%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%C{36}.%M] %n%level : %msg%n" />
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <Policies>
+               <TimeBasedTriggeringPolicy modulate="true" interval="1"/>  
+			</Policies>
+            <!-- <SizeBasedTriggeringPolicy size="${EVERY_FILE_SIZE}" /> -->
+        </RollingFile>
+        
+    </Appenders>
+
+    <Loggers>
+        <Logger name="cn.com.xl" level="info"/>
+        <Logger name="cn.com.xl.lps.app" level="debug"/>
+        <Root level="WARN" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFileInfo" />
+            <AppenderRef ref="RollingFileError" />
+            <AppenderRef ref="RollingFileDebug" />
+        </Root>
+    </Loggers>
+</configuration>
