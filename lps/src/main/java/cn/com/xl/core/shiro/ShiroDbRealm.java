@@ -47,7 +47,6 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
-		System.out.println("kkkkkkkkkkkkkkk");
 		log.info("Shiro登录认证启动");
 		
 		IShiro shiroFactory = ShiroManager.me().getDefaultShiroFactory();

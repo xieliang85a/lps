@@ -81,18 +81,18 @@
 
 
 	<!-- 配置shiro-redis -->  
-	<bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">  
-	    <property name="maxTotal" value="${redis.pool.maxTotal}"/> 
-	    <property name="maxIdle" value="${redis.pool.maxIdle}" />   
-	    <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}" /> 
-	    <property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />   
-	    <property name="testOnReturn" value="${redis.pool.testOnReturn}" />
-	</bean>  
-	<bean id="shiroRedisPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy">  
-        <constructor-arg index="0" ref="redisPoolConfig"/>    
-        <constructor-arg index="1" value="${shiro.redis.ip}" type="java.lang.String"/>    
-        <constructor-arg index="2" value="${shiro.redis.port}" type="int"/>    
-	</bean>
+<!-- 	<bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">   -->
+<!-- 	    <property name="maxTotal" value="${redis.pool.maxTotal}"/>  -->
+<!-- 	    <property name="maxIdle" value="${redis.pool.maxIdle}" />    -->
+<!-- 	    <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}" />  -->
+<!-- 	    <property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />    -->
+<!-- 	    <property name="testOnReturn" value="${redis.pool.testOnReturn}" /> -->
+<!-- 	</bean>   -->
+<!-- 	<bean id="shiroRedisPool" class="redis.clients.jedis.JedisPool" destroy-method="destroy">   -->
+<!--         <constructor-arg index="0" ref="redisPoolConfig"/>     -->
+<!--         <constructor-arg index="1" value="${shiro.redis.ip}" type="java.lang.String"/>     -->
+<!--         <constructor-arg index="2" value="${shiro.redis.port}" type="int"/>     -->
+<!-- 	</bean> -->
 
 	<!-- 配置redis集群版 -->
 	<!-- <bean id="jedisCluster" class="redis.clients.jedis.JedisCluster">
@@ -131,8 +131,11 @@
     	<!-- 注入自定义config -->
 		<property name="conf">
 			<bean class="cn.com.xl.common.config.WebConfig">
+<!-- 				<property name="defaultCacheFactory"> -->
+<!-- 					<bean class="cn.com.xl.core.toolbox.cache.RedisCacheFactory"></bean> -->
+<!-- 				</property> -->
 				<property name="defaultCacheFactory">
-					<bean class="cn.com.xl.core.toolbox.cache.RedisCacheFactory"></bean>
+					<bean class="cn.com.xl.core.toolbox.cache.EhcacheFactory"></bean>
 				</property>
 			</bean>
 		</property>
@@ -143,11 +146,12 @@
 				<!--<entry key="other" value-ref="otherSqlManager" />-->
 			</map>
 		</property>
-		<property name="jedisPool">
-			<map>
-				<entry key="${shiro.redis.name}" value-ref="shiroRedisPool" />
-			</map>
-		</property>
+<!-- 		<property name="jedisPool"> -->
+<!-- 			<map> -->
+<!-- 				<entry key="${shiro.redis.name}" value-ref="shiroRedisPool" /> -->
+<!-- 				<entry key="${shiro.redis.cache.name}" value-ref="shiroRedisPool" /> -->
+<!-- 			</map> -->
+<!-- 		</property> -->
 		<!-- <property name="jedisCluster">
 			<map>
 				<entry key="master" value-ref="jedisCluster" />
